@@ -8,7 +8,6 @@ import java.util.*;
 
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toMap;
-import static ru.azee.phonewords.utils.StringUtils.normalize;
 import static ru.azee.phonewords.utils.StringUtils.normalizeNumbers;
 
 /**
