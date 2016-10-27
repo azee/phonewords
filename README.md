@@ -32,12 +32,12 @@ Dictionary provider
 
 As we may want to use different dictionary sources (e.g. default, file specific, network specific, database) a dictionary provider factory is implemented. 
 
-If ```-Ddictionary="PATH_TO_DICTIONARY"``` is passed we read data from file. Otherwise we use a default one. It uses a list of 5000 most popular English words and is stored in resources.
+If ```-Ddictionary="PATH_TO_DICTIONARY"``` is passed we read data from file. Otherwise we use the default one. It uses a list of 5000 most popular English words and is stored in resources.
 
 Executor
 ------
 
-We may want to implement different kind of interaction with user. It may be an single-run output for a provided file with phone numbers listed. Or it may be an interactive console application when user enters numbers one by one. We also may want to implement a web service or database scheduled actions or something else. 
+We may want to implement different kind of interactions with user. It may be an single-run output for a provided file with phone numbers listed. Or it may be an interactive console application when user enters numbers one by one. We also may want to implement a web service or database scheduled actions or something else. 
 
 Executor factory is implemented for that reason. If ```-Ddata="PATH_TO_NUMBERS_LIST"``` is provided — data will be fetched from a file. If not — STDIN executor will take place. CTRL + C or type «quit» or «exit» to exit.
 
@@ -54,16 +54,18 @@ mvn clean install
 Running
 ==========
 
-Default dictionary an interactive IO:
+Default dictionary and interactive IO:
 ```
 java -jar phonenumbers.jar
 ```
 
-Customisation - dictionary and data parameters are optional
+Customisation - ```dictionary``` and ```data``` parameters are optional
 ```
 java -jar  -Ddictionary="PATH_TO_DICTIONARY" -Ddata="PATH_TO_NUMBERS_LIST"  phonenumbers.jar
 ```
 
 Source 
 ==========
-https://github.com/azee/phonewords
+Code: https://github.com/azee/phonewords
+Release: https://github.com/azee/phonewords/releases/latest
+
