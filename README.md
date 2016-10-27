@@ -16,6 +16,7 @@ Design
 Parts
 ------
 Code is divided into 3 major parts.
+
 1. Core. Business logic of trie-tree traversal
 2. Dictionary provider - a possibility to implement words providers from different sources
 3. Executor. A possibility to implement different user interaction strategies
