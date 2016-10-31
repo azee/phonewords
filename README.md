@@ -23,7 +23,7 @@ Code is divided into 3 major parts.
 
 Core
 ------
-The core of the solution is a trie-tree. The point is to build a trie-tree out of the list of words in the dictionary. Each ege will be a letter. A node may or may not contain a word from the dictionary. The idea is to traverse all possible branches for each provided number trying to build a list of possible substitutions as we hit a node with a word. 
+The core of the solution is a trie-tree. The point is to build a trie-tree out of the list of words in the dictionary. Each edge will be a letter. A node may or may not contain a word from the dictionary. The idea is to traverse all possible branches for each provided number trying to build a list of possible substitutions as we hit a node with a word. 
 
 Dictionary tree is build on application startup and can be used for each phone number provided.
 
