@@ -59,7 +59,7 @@ public class DictTraversal {
         List<String> tokens = new LinkedList<>();
         tokensList.add(tokens);
         getWords(numb, dictionary, tokensList, values);
-        
+
         //Try to find words with leading number
         if (numb.length() > 0) {
             tokensList = new LinkedList<>();
@@ -115,14 +115,6 @@ public class DictTraversal {
             if (child.getWords().size() > 0){
                 tokensList = addValuesToTokens(tokensList, child.getWords());
                 head = dictionary;
-
-                //Hit last character in number sequence - job is done
-                if (numb.length() == 1){
-                    tokensList.forEach(tokens -> {
-                        values.add(tokens.stream().collect(joining("-")));
-                    });
-                    return;
-                }
             }
         }
         //Hit last character in number sequence - job is done
@@ -146,7 +138,6 @@ public class DictTraversal {
         });
         return result;
     }
-
 
 
     /**
