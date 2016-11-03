@@ -59,15 +59,6 @@ public class DictTraversal {
         List<String> tokens = new LinkedList<>();
         tokensList.add(tokens);
         getWords(numb, dictionary, tokensList, values);
-
-        //Try to find words with leading number
-        if (numb.length() > 0) {
-            tokensList = new LinkedList<>();
-            tokens = new LinkedList<>();
-            tokens.add(String.valueOf(numb.charAt(0)));
-            tokensList.add(tokens);
-        }
-        getWords(numb.substring(1, numb.length()), dictionary, tokensList, values);
         return values;
     }
 

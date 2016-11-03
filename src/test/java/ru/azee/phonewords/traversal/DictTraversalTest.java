@@ -152,14 +152,6 @@ public class DictTraversalTest {
         validateInvariants(result, number, 1, "JOB");
     }
 
-    @Test
-    public void numberAtTheBeginnignTest(){
-        Map<String, Set<String>> result =  new DictTraversal(
-                Arrays.asList("me")).getValues(Arrays.asList("663"));
-
-        validateNumberResult(result, 1, "663");
-        validateInvariants(result, "663", 1, "6-ME");
-    }
 
     private void validateNumberResult(Map<String, Set<String>> result, int size, String... keys){
         assertNotNull(result);
