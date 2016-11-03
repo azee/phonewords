@@ -9,7 +9,6 @@ import java.util.Map;
 import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -24,28 +23,31 @@ public class DictionaryBuilderTest {
         );
 
         assertNotNull(head);
-        assertNull(head.getWord());
+        assertNotNull(head.getWords());
+        assertThat(head.getWords().size(), is(0));
         Map<Character, Node> children = head.getChildren();
         assertThat(children.size(), is(2));
-        assertThat(children.keySet(), containsInAnyOrder('F', 'N'));
+        assertThat(children.keySet(), containsInAnyOrder('3', '6'));
 
-        Node child = children.get('F');
+        Node child = children.get('3');
         assertNotNull(child);
-        assertNull(child.getWord());
+        assertNotNull(child.getWords());
+        assertThat(child.getWords().size(), is(0));
         children = child.getChildren();
         assertThat(children.size(), is(2));
-        assertThat(children.keySet(), containsInAnyOrder('A', 'I'));
+        assertThat(children.keySet(), containsInAnyOrder('2', '4'));
 
-        child = children.get('I');
+        child = children.get('4');
         assertNotNull(child);
-        assertNull(child.getWord());
+        assertNotNull(child.getWords());
+        assertThat(head.getWords().size(), is(0));
         children = child.getChildren();
         assertThat(children.size(), is(1));
-        assertThat(children.keySet(), containsInAnyOrder('T'));
+        assertThat(children.keySet(), containsInAnyOrder('8'));
 
-        child = children.get('T');
+        child = children.get('8');
         assertNotNull(child);
-        assertThat(child.getWord(), is("FIT"));
+        assertThat(child.getWords(), containsInAnyOrder("FIT"));
         assertThat(child.getChildren().size(), is(0));
     }
 
@@ -53,7 +55,7 @@ public class DictionaryBuilderTest {
     public void buildEmptyTree(){
         Node head = DictionaryBuilder.build(new ArrayList<>());
         assertNotNull(head);
-        assertNull(head.getWord());
+        assertThat(head.getWords().size(),is(0));
         assertThat(head.getChildren().size(), is(0));
     }
 
@@ -64,37 +66,66 @@ public class DictionaryBuilderTest {
         );
 
         assertNotNull(head);
-        assertNull(head.getWord());
+        assertThat(head.getWords().size(), is(0));
         assertThat(head.getChildren().size(), is(1));
-        assertThat(head.getChildren().keySet(), containsInAnyOrder('F'));
+        assertThat(head.getChildren().keySet(), containsInAnyOrder('3'));
 
-        head = head.getChildren().get('F');
+        head = head.getChildren().get('3');
         assertNotNull(head);
-        assertNull(head.getWord());
+        assertThat(head.getWords().size(), is(0));
         assertThat(head.getChildren().size(), is(1));
-        assertThat(head.getChildren().keySet(), containsInAnyOrder('I'));
+        assertThat(head.getChildren().keySet(), containsInAnyOrder('4'));
 
-        head = head.getChildren().get('I');
+        head = head.getChildren().get('4');
         assertNotNull(head);
-        assertNull(head.getWord());
+        assertThat(head.getWords().size(), is(0));
         assertThat(head.getChildren().size(), is(1));
-        assertThat(head.getChildren().keySet(), containsInAnyOrder('N'));
+        assertThat(head.getChildren().keySet(), containsInAnyOrder('6'));
 
-        head = head.getChildren().get('N');
+        head = head.getChildren().get('6');
         assertNotNull(head);
-        assertThat(head.getWord(), is("FIN"));
+        assertThat(head.getWords(), containsInAnyOrder("FIN"));
         assertThat(head.getChildren().size(), is(1));
-        assertThat(head.getChildren().keySet(), containsInAnyOrder('A'));
+        assertThat(head.getChildren().keySet(), containsInAnyOrder('2'));
 
-        head = head.getChildren().get('A');
+        head = head.getChildren().get('2');
         assertNotNull(head);
-        assertNull(head.getWord());
+        assertThat(head.getWords().size(), is(0));
         assertThat(head.getChildren().size(), is(1));
-        assertThat(head.getChildren().keySet(), containsInAnyOrder('L'));
+        assertThat(head.getChildren().keySet(), containsInAnyOrder('5'));
 
-        head = head.getChildren().get('L');
+        head = head.getChildren().get('5');
         assertNotNull(head);
-        assertThat(head.getWord(), is("FINAL"));
+        assertThat(head.getWords(), containsInAnyOrder("FINAL"));
+        assertThat(head.getChildren().size(), is(0));
+    }
+
+    @Test
+    public void buildTrieTreeMultipelWords(){
+        Node head = DictionaryBuilder.build(
+                Arrays.asList("bar", "bas")
+        );
+
+        assertNotNull(head);
+        assertThat(head.getWords().size(), is(0));
+        assertThat(head.getChildren().size(), is(1));
+        assertThat(head.getChildren().keySet(), containsInAnyOrder('2'));
+
+        head = head.getChildren().get('2');
+        assertNotNull(head);
+        assertThat(head.getWords().size(), is(0));
+        assertThat(head.getChildren().size(), is(1));
+        assertThat(head.getChildren().keySet(), containsInAnyOrder('2'));
+
+        head = head.getChildren().get('2');
+        assertNotNull(head);
+        assertThat(head.getWords().size(), is(0));
+        assertThat(head.getChildren().size(), is(1));
+        assertThat(head.getChildren().keySet(), containsInAnyOrder('7'));
+
+        head = head.getChildren().get('7');
+        assertNotNull(head);
+        assertThat(head.getWords(), containsInAnyOrder("BAR", "BAS"));
         assertThat(head.getChildren().size(), is(0));
     }
 
