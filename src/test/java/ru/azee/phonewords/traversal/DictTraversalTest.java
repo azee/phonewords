@@ -152,6 +152,7 @@ public class DictTraversalTest {
         validateInvariants(result, number, 1, "JOB");
     }
 
+
     private void validateNumberResult(Map<String, Set<String>> result, int size, String... keys){
         assertNotNull(result);
         assertThat(result.size(), is(size));

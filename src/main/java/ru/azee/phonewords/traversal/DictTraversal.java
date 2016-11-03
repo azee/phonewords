@@ -2,11 +2,11 @@ package ru.azee.phonewords.traversal;
 
 import ru.azee.phonewords.dictionary.DictionaryBuilder;
 import ru.azee.phonewords.dictionary.Node;
-import ru.azee.phonewords.dictionary.NumbersMap;
 
 import java.util.*;
 
 import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 import static ru.azee.phonewords.utils.StringUtils.normalizeNumbers;
 
@@ -17,9 +17,6 @@ public class DictTraversal {
 
     /** Head node of the dictionary trie tree */
     protected Node dictionary;
-
-    /** Digits-to-letters map */
-    protected final NumbersMap numbersMap = new NumbersMap();
 
     /**
      * Constructor for already build dictionary trie tree
@@ -58,7 +55,10 @@ public class DictTraversal {
     private Set<String> getWords(String numb) {
         numb = normalizeNumbers(numb);
         Set<String> values = new HashSet<>();
-        getWords(numb, dictionary, new LinkedList<>(), values);
+        List<List<String>> tokensList = new LinkedList<>();
+        List<String> tokens = new LinkedList<>();
+        tokensList.add(tokens);
+        getWords(numb, dictionary, tokensList, values);
         return values;
     }
 
@@ -66,17 +66,14 @@ public class DictTraversal {
      * Initial recursive traversal method to fetch possible substitutions
      * @param numb - telephone number
      * @param head - head of dictionary trie tree
-     * @param tokens - list of words for current branch
+     * @param tokensList - list of possible words variations for current branch
      * @param values - set of all possible values for this number
      */
-    private void getWords(String numb, Node head, List<String> tokens, Set<String> values) {
+    private void getWords(String numb, Node head, List<List<String>> tokensList, Set<String> values) {
         if (numb.length() == 0){
             return;
         }
-        //Iterate through all possible letters for current digit
-        for (Character character : numbersMap.getDict().get(numb.charAt(0))){
-            getWords(numb, head, head.getChildren().get(character), new LinkedList<>(tokens), values);
-        }
+        getWords(numb, head, head.getChildren().get(numb.charAt(0)), new LinkedList<>(tokensList), values);
     }
 
     /**
@@ -84,19 +81,18 @@ public class DictTraversal {
      * @param numb - telephone number
      * @param head - head of dictionary trie tree
      * @param child - current node of dictionary trie tree
-     * @param tokens - list of words for current branch
+     * @param tokensList - list of possible words variations for current branch
      * @param values - set of all possible values for this number
      */
-    private void getWords(String numb, Node head, Node child, List<String> tokens, Set<String> values) {
+    private void getWords(String numb, Node head, Node child, List<List<String>> tokensList, Set<String> values) {
         //If there is a letter available for current digit in a dictionary tree path
         if (child == null){
             //No letter found - try to add a digit to tokens if previous one is not a digit
-            if (tokens.size() > 0 && (isNumeric(tokens.get(tokens.size() - 1))) || head != dictionary){
-                return;
-            }
-
-            //Single digit is added - start looking for a new word path from the top of the dictionary
-            tokens.add(String.valueOf(numb.charAt(0)));
+            final Node finalHead = head;
+            tokensList = tokensList.stream()
+                    .filter(tokens -> finalHead == dictionary && (tokens.size() == 0 || !isNumeric(tokens.get(tokens.size() - 1))))
+                    .collect(toList());
+            tokensList.forEach(tokens -> tokens.add(String.valueOf(numb.charAt(0))));
             head = dictionary;
         } else {
             //Found a suitable letter - dictionary tree node is head now for current tree path
@@ -104,27 +100,42 @@ public class DictTraversal {
 
             //GetMore words if possible even if hit the target word - there may be a longer one
             //down the tree
-            getWords(numb.substring(1, numb.length()), head, new LinkedList<>(tokens), values);
+            getWords(numb.substring(1, numb.length()), head, new LinkedList<>(tokensList), values);
 
             //If the word if found - add it to tokens and start traversal from the top of the tree
-            if (child.getWord() != null){
-                tokens.add(child.getWord());
+            if (child.getWords().size() > 0){
+                tokensList = addValuesToTokens(tokensList, child.getWords());
                 head = dictionary;
-
-                //Hit last character in number sequence - job is done
-                if (numb.length() == 1){
-                    values.add(tokens.stream().collect(joining("-")));
-                    return;
-                }
             }
         }
         //Hit last character in number sequence - job is done
         if (numb.length() == 1 && head == dictionary){
-            values.add(tokens.stream().collect(joining("-")));
+            tokensList.forEach(tokens -> {
+                values.add(tokens.stream().collect(joining("-")));
+            });
             return;
         }
-        getWords(numb.substring(1, numb.length()), head, tokens, values);
+        getWords(numb.substring(1, numb.length()), head, tokensList, values);
     }
+
+    /**
+     * Copy values list and add all words to all tokens
+     * @param tokensList - list of tokensList
+     * @param words - list of words to add
+     * @return - created list of tokens
+     */
+    private List<List<String>> addValuesToTokens(List<List<String>> tokensList, Set<String > words){
+            List<List<String>> result = new LinkedList<>();
+        tokensList.stream().forEach(tokens -> {
+            words.forEach(word -> {
+                List<String> newTokens = new LinkedList<>(tokens);
+                newTokens.add(word);
+                result.add(newTokens);
+            });
+        });
+        return result;
+    }
+
 
     /**
      * Identify if a string is a number
