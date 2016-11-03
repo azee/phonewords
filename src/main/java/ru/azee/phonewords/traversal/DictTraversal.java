@@ -118,6 +118,12 @@ public class DictTraversal {
         getWords(numb.substring(1, numb.length()), head, tokensList, values);
     }
 
+    /**
+     * Copy values list and add all words to all tokens
+     * @param tokensList - list of tokensList
+     * @param words - list of words to add
+     * @return - created list of tokens
+     */
     private List<List<String>> addValuesToTokens(List<List<String>> tokensList, Set<String > words){
             List<List<String>> result = new LinkedList<>();
         tokensList.stream().forEach(tokens -> {
