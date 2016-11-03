@@ -152,6 +152,15 @@ public class DictTraversalTest {
         validateInvariants(result, number, 1, "JOB");
     }
 
+    @Test
+    public void multipleWordsInOneNodeTest(){
+        Map<String, Set<String>> result =  new DictTraversal(
+                Arrays.asList("beg", "aei", "cdg")).getValues(Arrays.asList("234"));
+
+        validateNumberResult(result, 1, "234");
+        validateInvariants(result, "234", 3, "BEG", "AEI", "CDG");
+    }
+
 
     private void validateNumberResult(Map<String, Set<String>> result, int size, String... keys){
         assertNotNull(result);

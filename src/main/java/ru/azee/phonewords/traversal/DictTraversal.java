@@ -119,7 +119,8 @@ public class DictTraversal {
     }
 
     /**
-     * Copy values list and add all words to all tokens
+     * Copy values list and add all words to all tokens.
+     * If there are more than 1 word in node we should multiply invariants
      * @param tokensList - list of tokensList
      * @param words - list of words to add
      * @return - created list of tokens
