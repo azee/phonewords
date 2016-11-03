@@ -9,6 +9,8 @@ import static ru.azee.phonewords.utils.StringUtils.normalizeWords;
  */
 public class DictionaryBuilder {
 
+    private final static NumbersMap numbersMap = new NumbersMap();
+
     /**
      * Build a trie tree out of the words list
      * @param words - list of words in dictionary
@@ -28,8 +30,8 @@ public class DictionaryBuilder {
     private static void addToTree(String word, Node head) {
         word = normalizeWords(word);
         for (char character : word.toCharArray()){
-            head = head.initChild(character);
+            head = head.initChild(numbersMap.getDict().get(character));
         }
-        head.setWord(word);
+        head.getWords().add(word);
     }
 }

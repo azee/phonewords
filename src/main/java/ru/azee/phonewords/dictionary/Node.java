@@ -7,20 +7,14 @@ import java.util.*;
  * Created by azee on 24.10.16.
  */
 public class Node {
-    private String word;
+    private Set<String> words;
     private Map<Character, Node> children;
 
-    public String getWord() {
-        return word;
-    }
-
-    public void setWord(String word) {
-        this.word = word;
-    }
-
-    public Node withWord(String word){
-        setWord(word);
-        return this;
+    public Set<String> getWords() {
+        if (words == null){
+            words = new HashSet<>();
+        }
+        return words;
     }
 
     public Map<Character, Node> getChildren() {
